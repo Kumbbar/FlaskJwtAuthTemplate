@@ -1,0 +1,29 @@
+import os
+
+from flask import Flask
+from flask import jsonify
+from flask import request
+from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
+
+from config import config_dict
+from models import db
+from apps.auth import auth
+from jwt_auth import jwt, create_user_access_token, create_user_tokens
+from services.users import get_user_by_email, create_user
+
+
+app = Flask(__name__)
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, 'db.sqlite3')
+app.config.update(config_dict)
+
+db.init_app(app)
+jwt.init_app(app)
+
+
+app.register_blueprint(auth, url_prefix='/auth')
+
+
+if __name__ == "__main__":
+    app.run(port=5001, debug=True)
