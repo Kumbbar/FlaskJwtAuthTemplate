@@ -24,7 +24,7 @@ def get_users():
     return Response(json.dumps(result), status=200, mimetype='application/json')
 
 
-@users.route('/', methods=['POST'])
+@users.route('/one', methods=['POST'])
 @jwt_required()
 @admin_required
 def get_user():
