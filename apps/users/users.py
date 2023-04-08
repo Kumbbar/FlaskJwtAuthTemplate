@@ -7,22 +7,10 @@ from services.users import get_all_users, get_user_data_dict, get_user_by_id,get
 from flask import Response
 
 from models import User, db
+from .decorators import admin_required
+
 
 users = Blueprint('users', __name__)
-
-
-def admin_required(func):
-    def wrapper(*args, **kwargs):
-        if not current_user.is_admin:
-            return Response(
-                json.dumps({'error': 'Admin user required'}),
-                status=400,
-                mimetype='application/json'
-            )
-        result = func(*args, **kwargs)
-        return result
-    wrapper.__name__ = func.__name__
-    return wrapper
 
 
 @users.route('/all', methods=['GET'])
@@ -36,13 +24,13 @@ def get_users():
     return Response(json.dumps(result), status=200, mimetype='application/json')
 
 
-@users.route('/', methods=['GET'])
+@users.route('/', methods=['POST'])
 @jwt_required()
 @admin_required
 def get_user():
     user_id = request.json.get("id", None)
     if user_id:
-        user = get_user_by_id(id)
+        user = get_user_by_id(user_id)
         return get_user_data_json(user)
     return Response(json.dumps({'error': 'User_id required'}, status=400, mimetype='application/json'))
 
