@@ -18,7 +18,8 @@ def get_user_data_json(user):
         email=user.email,
         name=user.name,
         surname=user.surname,
-        role=user.role
+        role=user.role,
+        is_admin=user.is_admin
     )
 
 

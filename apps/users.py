@@ -5,6 +5,8 @@ from flask_jwt_extended import jwt_required, current_user, get_jwt_identity
 from services.users import get_all_users, get_user_data_dict, get_user_by_id,get_user_data_json
 from flask import Response
 
+from models import User, db
+
 users = Blueprint('users', __name__)
 
 
@@ -35,6 +37,7 @@ def get_users():
 
 @users.route('/', methods=['GET'])
 @jwt_required()
+@admin_required
 def get_user():
     user_id = request.json.get("id", None)
     if user_id:
@@ -43,15 +46,27 @@ def get_user():
     return Response(json.dumps({'error': 'User_id required'}, status=400, mimetype='application/json'))
 
 
-# @users.route('/', methods=['GET'])
-# @except_validation_error_decorator
-# def edit_object() -> Response:
-#     """Edit object longitude and latitude in database by title from json request"""
-#     target_object = request.json
-#     title, longitude, latitude = check_edit_request(target_object)
-#
-#     modified_object = Object.select().where(Object.title == title).get()
-#     modified_object.longitude = longitude
-#     modified_object.latitude = latitude
-#     modified_object.save()
-#     return Response(json.dumps(target_object), status=200, mimetype='application/json')
+@users.route('/', methods=['PUT'])
+@jwt_required()
+@admin_required
+def edit_user():
+    user_id = request.json.get("id", None)
+    password = request.json.get("password", None)
+    user = User.query.filter_by(id=user_id).update(request.json)
+    if password:
+        get_user_by_id(user_id).password = User.hash_password(password)
+    db.session.commit()
+    return Response(json.dumps({'success': 'user_updated'}), status=200, mimetype='application/json')
+
+
+@users.route('/', methods=['DELETE'])
+@jwt_required()
+@admin_required
+def delete_user():
+    user_id = request.json.get("id", None)
+    password = request.json.get("password", None)
+    user = User.query.filter_by(id=user_id).update(request.json)
+    if password:
+        get_user_by_id(user_id).password = User.hash_password(password)
+    db.session.commit()
+    return Response(json.dumps({'success': 'user_updated'}), status=200, mimetype='application/json')
