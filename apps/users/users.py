@@ -35,7 +35,7 @@ def get_user():
     return Response(json.dumps({'error': 'User_id required'}, status=400, mimetype='application/json'))
 
 
-@users.route('/', methods=['PUT'])
+@users.route('/', methods=['POST'])
 @jwt_required()
 @admin_required
 def create_user():
