@@ -22,7 +22,7 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
     name = db.Column(db.Text, nullable=True)
     surname = db.Column(db.Text, nullable=True)
-    role = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    role = db.Column(db.Integer, db.ForeignKey('roles.id'), default=1)
     is_admin = db.Column(db.Integer, unique=False, default=False)
 
     def check_password(self, password):
