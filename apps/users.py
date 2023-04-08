@@ -2,27 +2,42 @@ import json
 
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, current_user, get_jwt_identity
-from services.users import get_all_users, get_user_data_dict
+from services.users import get_all_users, get_user_data_dict, get_user_by_id,get_user_data_json
 from flask import Response
 
 users = Blueprint('users', __name__)
 
 
 def admin_required(func):
-    def wrapper():
-        pass
 
+    def wrapper(*args, **kwargs):
+        if not current_user.is_admin:
+            return Response(status=400, mimetype='application/json')
+        result = func(*args, **kwargs)
+        return result
     wrapper.__name__ = func.__name__
     return wrapper
 
 
-@users.route('/', methods=['GET'])
+@users.route('/all', methods=['GET'])
+@jwt_required()
 def get_users():
+
     users = get_all_users()
     result = []
     for user in users:
         result.append(get_user_data_dict(user))
     return Response(json.dumps(result), status=200, mimetype='application/json')
+
+
+@users.route('/one', methods=['GET'])
+@jwt_required()
+def get_user():
+    user_id = request.json.get("id", None)
+    if user_id:
+        user = get_user_by_id(id)
+        return get_user_data_json(user)
+    return Response(status=400, mimetype='application/json')
 
 
 # @app.route('/objects/edit', methods=['POST'])

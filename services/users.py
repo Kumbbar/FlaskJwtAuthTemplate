@@ -11,6 +11,7 @@ def get_user_data_dict(user):
         role=user.role
     )
 
+
 def get_user_data_json(user):
     return jsonify(
         id=user.id,

@@ -5,6 +5,7 @@ from .jwt_auth import create_user_access_token, create_user_tokens
 from models import db
 from services.users import create_user, get_user_by_email, get_user_data_json
 
+
 auth = Blueprint('auth', __name__)
 
 
@@ -29,7 +30,7 @@ def register():
     surname = request.json.get("surname", None)
 
     if get_user_by_email(email):
-        return jsonify("User with this email already exists"), 400
+        return jsonify(error="User with this email already exists"), 400
     user = create_user(email=email, password=password, name=name, surname=surname)
     db.session.add(user)
     db.session.commit()
