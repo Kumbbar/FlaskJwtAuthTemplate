@@ -20,7 +20,5 @@ def get_role_by_id(user_id: int) -> (User, None):
     return User.query.filter_by(id=user_id).one_or_none()
 
 
-
-
 def get_all_roles():
     return Role.query.all()
