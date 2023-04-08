@@ -47,6 +47,7 @@ def create_user():
 
     user = User(**request.json)
     user.password = User.hash_password(password)
+    db.session.add(user)
     db.session.commit()
     return Response(json.dumps({'success': 'user created'}), status=200, mimetype='application/json')
 
