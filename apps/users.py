@@ -16,7 +16,7 @@ def admin_required(func):
     return wrapper
 
 
-@users.route('/all', methods=['GET'])
+@users.route('/', methods=['GET'])
 def get_users():
     users = get_all_users()
     result = []
