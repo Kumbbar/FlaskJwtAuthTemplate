@@ -9,6 +9,7 @@ from models import User, db, Role
 from .decorators import admin_required
 from services.roles import get_all_roles, get_role_data_dict, get_role_by_id, get_role_data_json
 
+
 roles = Blueprint('roles', __name__)
 
 
@@ -38,9 +39,6 @@ def get_role():
 @jwt_required()
 @admin_required
 def create_role():
-    password = request.json.get('password', None)
-    email = request.json.get('password', None)
-
     role = Role(**request.json)
     db.session.add(role)
     db.session.commit()

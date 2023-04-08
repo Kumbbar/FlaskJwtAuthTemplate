@@ -65,11 +65,11 @@ def edit_user():
     return Response(json.dumps({'success': 'user updated'}), status=200, mimetype='application/json')
 
 
-@users.route('/', methods=['DELETE'])
+@users.route('/<user_id>', methods=['DELETE'])
 @jwt_required()
 @admin_required
-def delete_user():
-    user_id = request.json.get("id", None)
+def delete_user(user_id):
+    user_id = user_id
     user = get_user_by_id(user_id)
     db.session.delete(user)
     db.session.commit()

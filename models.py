@@ -4,11 +4,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import Config
 
+
 db = SQLAlchemy()
 
 
+# USERS
+
 class Role(db.Model):
     __tablename__ = 'roles'
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False, unique=True)
 
@@ -34,3 +38,51 @@ class User(db.Model):
         password = password + cls.salt
         hashed = hashlib.md5(password.encode())
         return hashed.hexdigest()
+
+
+# PURCHASES
+
+
+class ProductCategory(db.Model):
+    __tablename__ = 'products_categories'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text, nullable=False, unique=True)
+
+
+class Product(db.Model):
+    __tablename__ = 'products'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text, nullable=False, unique=True)
+    category = db.Column(db.Integer, db.ForeignKey('products_categories.id'), nullable=True)
+
+
+# class Purchase(db.Model):
+#     __tablename__ = 'products'
+#
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.Text, nullable=False, unique=True)
+#     category = db.relationship(ProductCategories, backref='products_categories')
+
+
+# CAFE
+# class Cafe(db.Model):
+#     __tablename__ = 'cafes'
+#
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.Text, nullable=True, unique=False)
+#     address = db.Column(db.Text, nullable=False, unique=True)
+#     longitude = db.Column(db.Decimal(3, 10), nullable=True)
+#     latitude = db.Column(db.Decimal(3, 10), nullable=True)
+
+
+# Provide
+
+class Provider(db.Model):
+    __tablename__ = 'providers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text, nullable=False, unique=False)
+
+
