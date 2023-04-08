@@ -8,7 +8,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
 from config import config_dict
 from models import db
 from apps.auth.auth import auth
-from apps.users import users
+from apps.users.users import users
 from apps.auth.jwt_auth import jwt, create_user_access_token, create_user_tokens
 from services.users import get_user_by_email, create_user
 
