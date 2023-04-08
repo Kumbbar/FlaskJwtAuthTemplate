@@ -43,15 +43,15 @@ def get_user():
     return Response(json.dumps({'error': 'User_id required'}, status=400, mimetype='application/json'))
 
 
-@users.route('/', methods=['GET'])
-@except_validation_error_decorator
-def edit_object() -> Response:
-    """Edit object longitude and latitude in database by title from json request"""
-    target_object = request.json
-    title, longitude, latitude = check_edit_request(target_object)
-
-    modified_object = Object.select().where(Object.title == title).get()
-    modified_object.longitude = longitude
-    modified_object.latitude = latitude
-    modified_object.save()
-    return Response(json.dumps(target_object), status=200, mimetype='application/json')
+# @users.route('/', methods=['GET'])
+# @except_validation_error_decorator
+# def edit_object() -> Response:
+#     """Edit object longitude and latitude in database by title from json request"""
+#     target_object = request.json
+#     title, longitude, latitude = check_edit_request(target_object)
+#
+#     modified_object = Object.select().where(Object.title == title).get()
+#     modified_object.longitude = longitude
+#     modified_object.latitude = latitude
+#     modified_object.save()
+#     return Response(json.dumps(target_object), status=200, mimetype='application/json')
