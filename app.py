@@ -7,8 +7,9 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
 
 from config import config_dict
 from models import db
-from apps.auth import auth
-from jwt_auth import jwt, create_user_access_token, create_user_tokens
+from apps.auth.auth import auth
+from apps.users import users
+from apps.auth.jwt_auth import jwt, create_user_access_token, create_user_tokens
 from services.users import get_user_by_email, create_user
 
 
@@ -23,7 +24,8 @@ jwt.init_app(app)
 
 
 app.register_blueprint(auth, url_prefix='/auth')
+app.register_blueprint(users, url_prefix='/users')
 
 
 if __name__ == "__main__":
-    app.run(port=5001, debug=True)
+    app.run(port=5001, debug=True, host='0.0.0.0')

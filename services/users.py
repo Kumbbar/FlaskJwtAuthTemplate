@@ -1,4 +1,4 @@
-from models import User
+from models import User, Role
 
 
 def get_user_by_email(email:str) -> (User, None):
@@ -15,3 +15,7 @@ def create_user(**kwargs):
         password=User.hash_password(kwargs['password'])
     )
     return user
+
+
+def get_users():
+    return User.query.all()

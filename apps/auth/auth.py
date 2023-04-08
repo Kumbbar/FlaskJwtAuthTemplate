@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, current_user, get_jwt_identity
 
-from jwt_auth import create_user_access_token, create_user_tokens
+from .jwt_auth import create_user_access_token, create_user_tokens
 from models import db
 from services.users import create_user, get_user_by_email
 
@@ -32,7 +32,7 @@ def register():
     db.session.commit()
 
     access_token, refresh_token = create_user_tokens(user)
-    return jsonify(access_token=access_token, resfresh_token=refresh_token)
+    return jsonify(access_token=access_token, refresh_token=refresh_token)
 
 
 @auth.route("/refresh", methods=["POST"])
@@ -43,7 +43,7 @@ def refresh_tokens():
     return jsonify(access_token=access_token)
 
 
-@auth.route("/im", methods=["GET"])
+@auth.route("/profile", methods=["GET"])
 @jwt_required()
 def get_user_data():
     return jsonify(

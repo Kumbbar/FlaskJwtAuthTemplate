@@ -4,7 +4,8 @@ from flask_jwt_extended import current_user
 from flask_jwt_extended import jwt_required
 
 from services.users import get_user_by_id
-
+from config import Config
+from datetime import timedelta
 
 jwt = JWTManager()
 
@@ -29,8 +30,8 @@ def user_lookup_callback(_jwt_header, jwt_data):
 
 
 def create_user_tokens(user):
-    access_token = create_access_token(identity=user)
-    refresh_token = create_refresh_token(identity=user)
+    access_token = create_access_token(identity=user, expires_delta=timedelta(hours=Config.ACCESS_TOKEN_TTL))
+    refresh_token = create_refresh_token(identity=user, expires_delta=timedelta(days=Config.REFRESH_TOKEN_TTL))
     return access_token, refresh_token
 
 
