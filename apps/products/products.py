@@ -55,11 +55,11 @@ def edit_product():
     return Response(json.dumps({'success': 'product updated'}), status=200, mimetype='application/json')
 
 
-@products.route('/', methods=['DELETE'])
+@products.route('/<product_id>', methods=['DELETE'])
 @jwt_required()
 @admin_required
-def delete_product():
-    product_id = request.json.get("id", None)
+def delete_product(product_id):
+    product_id = product_id
     product = ProductService.get_by_id(product_id)
     db.session.delete(product)
     db.session.commit()

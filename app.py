@@ -28,7 +28,7 @@ jwt.init_app(app)
 app.register_blueprint(auth, url_prefix='/auth')
 app.register_blueprint(users, url_prefix='/users')
 app.register_blueprint(roles, url_prefix='/roles')
-# app.register_blueprint(products, url_prefix='/products')
+app.register_blueprint(products, url_prefix='/products')
 
 
 if __name__ == "__main__":
