@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, current_user, get_jwt_identity
 
 from .jwt_auth import create_user_access_token, create_user_tokens
 from models import db
-from services.users import create_user, get_user_by_email
+from services.users import create_user, get_user_by_email, get_user_data_json
 
 auth = Blueprint('auth', __name__)
 
@@ -25,9 +25,12 @@ def login():
 def register():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+    name = request.json.get("name", None)
+    surname = request.json.get("surname", None)
+
     if get_user_by_email(email):
         return jsonify("User with this email already exists"), 400
-    user = create_user(email=email, password=password)
+    user = create_user(email=email, password=password, name=name, surname=surname)
     db.session.add(user)
     db.session.commit()
 
@@ -46,7 +49,4 @@ def refresh_tokens():
 @auth.route("/profile", methods=["GET"])
 @jwt_required()
 def get_user_data():
-    return jsonify(
-        id=current_user.id,
-        email=current_user.email,
-    )
+    return get_user_data_json(current_user)
