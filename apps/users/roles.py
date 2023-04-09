@@ -24,10 +24,10 @@ def get_roles():
     return Response(json.dumps(result), status=200, mimetype='application/json')
 
 
-@roles.route('/one', methods=['POST'])
+@roles.route('/<int:role_id>', methods=['POST'])
 @jwt_required()
 @admin_required
-def get_role():
+def get_role(role_id):
     role_id = request.json.get("id", None)
     if role_id:
         role = get_role_by_id(role_id)
@@ -55,11 +55,11 @@ def edit_role():
     return Response(json.dumps({'success': 'role updated'}), status=200, mimetype='application/json')
 
 
-@roles.route('/', methods=['DELETE'])
+@roles.route('/<int:role_id>', methods=['DELETE'])
 @jwt_required()
 @admin_required
-def delete_user():
-    role_id = request.json.get("id", None)
+def delete_role(role_id):
+    role_id = role_id
     role = get_role_by_id(role_id)
     db.session.delete(role)
     db.session.commit()

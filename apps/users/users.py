@@ -24,11 +24,11 @@ def get_users():
     return Response(json.dumps(result), status=200, mimetype='application/json')
 
 
-@users.route('/one', methods=['POST'])
+@users.route('/<int:user_id>', methods=['POST'])
 @jwt_required()
 @admin_required
-def get_user():
-    user_id = request.json.get("id", None)
+def get_user(user_id):
+    user_id = user_id
     if user_id:
         user = get_user_by_id(user_id)
         return get_user_data_json(user)
@@ -65,7 +65,7 @@ def edit_user():
     return Response(json.dumps({'success': 'user updated'}), status=200, mimetype='application/json')
 
 
-@users.route('/<user_id>', methods=['DELETE'])
+@users.route('/<int:user_id>', methods=['DELETE'])
 @jwt_required()
 @admin_required
 def delete_user(user_id):

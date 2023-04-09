@@ -24,11 +24,11 @@ def get_products():
     return Response(json.dumps(result), status=200, mimetype='application/json')
 
 
-@products.route('/one', methods=['POST'])
+@products.route('/<int:product_id>', methods=['POST'])
 @jwt_required()
 @admin_required
-def get_product():
-    product_id = request.json.get("id", None)
+def get_product(product_id):
+    product_id = product_id
     if product_id:
         product = ProductService.get_by_id(product_id)
         return ProductService.get_data_json(product)
@@ -55,7 +55,7 @@ def edit_product():
     return Response(json.dumps({'success': 'product updated'}), status=200, mimetype='application/json')
 
 
-@products.route('/<product_id>', methods=['DELETE'])
+@products.route('/<int:product_id>', methods=['DELETE'])
 @jwt_required()
 @admin_required
 def delete_product(product_id):
