@@ -10,6 +10,7 @@ from models import db
 from apps.auth.auth import auth
 from apps.users.roles import roles
 from apps.users.users import users
+from apps.products.categories import categories
 from apps.products.products import products
 from apps.auth.jwt_auth import jwt, create_user_access_token, create_user_tokens
 from services.users import get_user_by_email, create_user
@@ -29,6 +30,7 @@ app.register_blueprint(auth, url_prefix='/auth')
 app.register_blueprint(users, url_prefix='/users')
 app.register_blueprint(roles, url_prefix='/roles')
 app.register_blueprint(products, url_prefix='/products')
+app.register_blueprint(categories, url_prefix='/categories')
 
 
 if __name__ == "__main__":

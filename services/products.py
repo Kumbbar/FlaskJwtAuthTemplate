@@ -2,7 +2,7 @@ from flask import jsonify
 from models import Product
 
 
-class ProductService():
+class ProductService:
     @staticmethod
     def get_data_dict(product):
         return dict(
