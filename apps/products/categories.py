@@ -15,8 +15,7 @@ categories = Blueprint('categories', __name__)
 
 @categories.route('/all', methods=['GET'])
 @jwt_required()
-@admin_required
-def get_products():
+def get_categories():
     products = CategoryService.get_all()
     result = []
     for product in products:
@@ -26,41 +25,40 @@ def get_products():
 
 @categories.route('/<int:category_id>', methods=['POST'])
 @jwt_required()
-@admin_required
-def get_product(category_id):
-    product_id = category_id
-    if product_id:
-        product = CategoryService.get_by_id(product_id)
-        return CategoryService.get_data_json(product)
+def get_category(category_id):
+    category_id = category_id
+    if category_id:
+        category = CategoryService.get_by_id(category_id)
+        return CategoryService.get_data_json(category)
     return Response(json.dumps({'error': 'id required'}, status=400, mimetype='application/json'))
 
 
 @categories.route('/', methods=['POST'])
 @jwt_required()
 @admin_required
-def create_product():
+def create_category():
     role = ProductCategory(**request.json)
     db.session.add(role)
     db.session.commit()
-    return Response(json.dumps({'success': 'product created'}), status=200, mimetype='application/json')
+    return Response(json.dumps({'success': 'category created'}), status=200, mimetype='application/json')
 
 
 @categories.route('/', methods=['PUT'])
 @jwt_required()
 @admin_required
-def edit_product():
+def edit_category():
     product_id = request.json.get("id", None)
     user = ProductCategory.query.filter_by(id=product_id).update(request.json)
     db.session.commit()
-    return Response(json.dumps({'success': 'product updated'}), status=200, mimetype='application/json')
+    return Response(json.dumps({'success': 'category updated'}), status=200, mimetype='application/json')
 
 
 @categories.route('/<int:category_id>', methods=['DELETE'])
 @jwt_required()
 @admin_required
-def delete_product(category_id):
-    product_id = category_id
-    product = CategoryService.get_by_id(product_id)
-    db.session.delete(product)
+def delete_category(category_id):
+    category_id = category_id
+    category = CategoryService.get_by_id(category_id)
+    db.session.delete(category)
     db.session.commit()
-    return Response(json.dumps({'success': 'product deleted'}), status=200, mimetype='application/json')
+    return Response(json.dumps({'success': 'category deleted'}), status=200, mimetype='application/json')

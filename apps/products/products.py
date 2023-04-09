@@ -15,7 +15,6 @@ products = Blueprint('products', __name__)
 
 @products.route('/all', methods=['GET'])
 @jwt_required()
-@admin_required
 def get_products():
     products = ProductService.get_all()
     result = []
@@ -26,7 +25,6 @@ def get_products():
 
 @products.route('/<int:product_id>', methods=['POST'])
 @jwt_required()
-@admin_required
 def get_product(product_id):
     product_id = product_id
     if product_id:
